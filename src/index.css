@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ✅ Custom marquee utility (guaranteed) */
+@layer utilities {
+  @keyframes marqueeMove {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-55%); }
+  }
+
+  .animate-marquee {
+    animation: marqueeMove 11s linear infinite;
+  }
+
+  .marquee-pause:hover {
+    animation-play-state: paused;
+  }
+}
