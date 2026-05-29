@@ -109,15 +109,20 @@ export default function AdminApprove() {
     });
   };
 
-  const deleteDriver = (id) => {
+ const deleteDriver = (id) => {
     if (!window.confirm("Are you sure you want to permanently delete this driver?"))
       return;
 
     animateAndThen(id, async () => {
+      // 1. Fixed the URL route by removing the extra "/delete" match string
       await axios.delete(
-        `http://localhost:5000/api/admin/drivers/delete/${id}`,
+        `http://localhost:5000/api/admin/drivers/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      
+      // 2. Optimistic local state update to ensure it vanishes instantly from the screen
+      setApproved((prevApproved) => prevApproved.filter((d) => d._id !== id));
+      
       toast.success("🗑 Driver permanently deleted");
     });
   };

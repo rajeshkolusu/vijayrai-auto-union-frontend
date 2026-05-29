@@ -10,6 +10,7 @@ export default function CreateProfile() {
     email: "",
     vehicleNumber: "",
     upiId: "",
+    vehicleCategory: "Passenger", // ✅ Added default state value
   });
 
   const [imageFile, setImageFile] = useState(null); // ✅ file
@@ -90,6 +91,7 @@ export default function CreateProfile() {
         email: "",
         vehicleNumber: "",
         upiId: "",
+        vehicleCategory: "Passenger", // ✅ Added clear handler fallback
       });
       setImageFile(null);
       setPreview("");
@@ -182,6 +184,20 @@ export default function CreateProfile() {
               />
             </div>
 
+            {/* ✅ NEW VEHICLE CATEGORY DROPDOWN BOX */}
+            <div>
+              <label className="text-xs font-black text-black">Vehicle Category *</label>
+              <select
+                name="vehicleCategory"
+                value={formData.vehicleCategory}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-2xl border-2 border-black bg-white px-4 py-3 font-bold text-black outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="Passenger">Passenger Service (🚕)</option>
+                <option value="Goods Carrier">Goods Carrier (📦)</option>
+              </select>
+            </div>
+
             <div>
               <label className="text-xs font-black text-black">Email</label>
               <input
@@ -193,7 +209,7 @@ export default function CreateProfile() {
               />
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label className="text-xs font-black text-black">UPI ID</label>
               <input
                 name="upiId"

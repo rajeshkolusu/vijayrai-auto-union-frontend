@@ -173,6 +173,17 @@ export default function Drivers() {
                               {driver.vehicleNumber || "-"}
                             </span>
                           </div>
+                          
+                          {/* ✅ NEW CUSTOM VEHICLE CATEGORY BADGE */}
+                          <div className="mt-1.5">
+                            <span className={`inline-block px-2 py-0.5 text-[10px] font-black rounded-md border-2 border-black shadow-[1px_1px_0px_0px_rgba(8,8,8,8)] ${
+                              driver.vehicleCategory === "Goods Carrier" 
+                                ? "bg-yellow-300 text-black" 
+                                : "bg-yellow-500 text-black"
+                            }`}>
+                              {driver.vehicleCategory === "Goods Carrier" ? " Goods Carrier" : " Passenger"}
+                            </span>
+                          </div>
                         </div>
 
                         {/* avatar */}
