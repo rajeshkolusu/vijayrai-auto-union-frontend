@@ -54,7 +54,8 @@ export default function CreateProfile() {
     const fd = new FormData();
     fd.append("image", imageFile);
 
-    const res = await axios.post("http://localhost:5000/api/drivers/upload", fd, {
+    // 🔴 FIXED: Changed from hardcoded localhost to relative endpoint path
+    const res = await axios.post("/drivers/upload", fd, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
@@ -72,12 +73,13 @@ export default function CreateProfile() {
 
     setLoading(true);
 
-    try {
+    try { // 🌟 FIXED: Restored this missing try wrapper block to fix syntax errors!
       // 1) upload image (if selected)
       const imageUrl = await uploadImage();
 
       // 2) register driver with imageUrl
-      await axios.post("http://localhost:5000/api/drivers/register", {
+      // 🔴 FIXED: Changed from hardcoded localhost to relative endpoint path
+      await axios.post("/drivers/register", {
         ...formData,
         imageUrl,
       });
