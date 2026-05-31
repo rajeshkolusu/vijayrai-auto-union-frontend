@@ -24,7 +24,8 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/login", {
+      // 🔴 FIXED: Changed from hardcoded localhost to relative cloud path
+      const res = await axios.post("/admin/login", {
         email,
         password,
       });
@@ -50,7 +51,8 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/drivers/login", {
+      // 🔴 FIXED: Changed from hardcoded localhost to relative cloud path
+      const res = await axios.post("/drivers/login", {
         mobile,
       });
 
