@@ -218,12 +218,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-2xl border-2 border-black bg-[#6ff2ee] p-4">
-              <div className="text-sm font-black text-[#3d340c]">Secure Access</div>
-              <div className="mt-2 text-xs font-bold text-[#3d340c] leading-relaxed">
-                Admin features are protected using{" "}
-                <span className="font-black">adminToken</span> + role-based routes.
-              </div>
+           
             </div>
           </div>
         </div>
