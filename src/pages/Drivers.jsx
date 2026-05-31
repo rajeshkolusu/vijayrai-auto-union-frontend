@@ -19,7 +19,9 @@ export default function Drivers() {
 
   const fetchApprovedDrivers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/drivers");
+      setLoading(true);
+      // 🔴 FIXED: Updated native fetch to use your live production Choreo cloud instance path instead of localhost
+      const res = await fetch("https://d5816076-422e-4156-8125-98bade78084f-dev.e1-us-east-azure.choreoapis.dev/default/vijayrai-auto-union-backe/v1.0/api/drivers");
       const data = await res.json();
       setDrivers(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -174,14 +176,14 @@ export default function Drivers() {
                             </span>
                           </div>
                           
-                          {/* ✅ NEW CUSTOM VEHICLE CATEGORY BADGE */}
+                          {/* ✅ CORRECTED VEHICLE CATEGORY BADGE DESIGN COLORS */}
                           <div className="mt-1.5">
-                            <span className={`inline-block px-2 py-0.5 text-[10px] font-black rounded-md border-2 border-black shadow-[1px_1px_0px_0px_rgba(8,8,8,8)] ${
+                            <span className={`inline-block px-2 py-0.5 text-[10px] font-black rounded-md border-2 border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${
                               driver.vehicleCategory === "Goods Carrier" 
                                 ? "bg-yellow-300 text-black" 
-                                : "bg-yellow-500 text-black"
+                                : "bg-blue-300 text-black"
                             }`}>
-                              {driver.vehicleCategory === "Goods Carrier" ? " Goods Carrier" : " Passenger"}
+                              {driver.vehicleCategory === "Goods Carrier" ? "📦 Goods Carrier" : "🚕 Passenger"}
                             </span>
                           </div>
                         </div>

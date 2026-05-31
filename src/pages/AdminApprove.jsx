@@ -47,11 +47,12 @@ export default function AdminApprove() {
 
       setLoading(true);
 
+      // 🔴 FIXED: Swapped out hardcoded localhost URLs for relative base endpoints
       const [pendingRes, approvedRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/admin/drivers/pending", {
+        axios.get("/admin/drivers/pending", {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get("http://localhost:5000/api/admin/drivers/approved", {
+        axios.get("/admin/drivers/approved", {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -89,8 +90,9 @@ export default function AdminApprove() {
 
   const approveDriver = (id) => {
     animateAndThen(id, async () => {
+      // 🔴 FIXED: Route switched to clean relative URL path
       await axios.put(
-        `http://localhost:5000/api/admin/drivers/approve/${id}`,
+        `/admin/drivers/approve/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -100,8 +102,9 @@ export default function AdminApprove() {
 
   const rejectDriver = (id) => {
     animateAndThen(id, async () => {
+      // 🔴 FIXED: Route switched to clean relative URL path
       await axios.put(
-        `http://localhost:5000/api/admin/drivers/reject/${id}`,
+        `/admin/drivers/reject/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -109,20 +112,19 @@ export default function AdminApprove() {
     });
   };
 
- const deleteDriver = (id) => {
+  const deleteDriver = (id) => {
     if (!window.confirm("Are you sure you want to permanently delete this driver?"))
       return;
 
     animateAndThen(id, async () => {
-      // 1. Fixed the URL route by removing the extra "/delete" match string
+      // 🔴 FIXED: Route switched to clean relative URL path
       await axios.delete(
-        `http://localhost:5000/api/admin/drivers/${id}`,
+        `/admin/drivers/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
-      // 2. Optimistic local state update to ensure it vanishes instantly from the screen
+      // Local filter update for snappy UX performance
       setApproved((prevApproved) => prevApproved.filter((d) => d._id !== id));
-      
       toast.success("🗑 Driver permanently deleted");
     });
   };
@@ -159,7 +161,19 @@ export default function AdminApprove() {
           <p className="text-sm mt-1"><b>Mobile:</b> {d.mobile}</p>
           <p className="text-sm"><b>Email:</b> {d.email || "—"}</p>
           <p className="text-sm"><b>Vehicle:</b> {d.vehicleNumber}</p>
-          <p className="text-sm"><b>UPI:</b> {d.upiId || "—"}</p>
+          
+          {/* ✅ DYNAMIC VEHICLE CATEGORY INDICATOR FOR ADMIN OVERVIEW */}
+          <div className="mt-1">
+            <span className={`inline-block px-2 py-0.5 text-[10px] font-black rounded-md border-2 border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] ${
+              d.vehicleCategory === "Goods Carrier" 
+                ? "bg-yellow-300 text-black" 
+                : "bg-blue-300 text-black"
+            }`}>
+              {d.vehicleCategory === "Goods Carrier" ? "📦 Goods Carrier" : "🚕 Passenger"}
+            </span>
+          </div>
+
+          <p className="text-sm mt-1"><b>UPI:</b> {d.upiId || "—"}</p>
 
           <p className="text-xs mt-2 opacity-70">
             <b>Registered:</b> {formatDateTime(d.createdAt)}

@@ -13,6 +13,7 @@ export default function DriverProfile() {
     vehicleNumber: "",
     imageUrl: "",
     upiId: "",
+    vehicleCategory: "Passenger", // ✅ Dynamic state value included
   });
 
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,8 @@ export default function DriverProfile() {
     const load = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5000/api/drivers/${driverId}`);
+        // 🔴 FIXED: Converted hardcoded localhost to relative api endpoint
+        const res = await fetch(`/drivers/${driverId}`);
         const data = await res.json();
 
         setFormData({
@@ -51,6 +53,7 @@ export default function DriverProfile() {
           vehicleNumber: data.vehicleNumber || "",
           imageUrl: data.imageUrl || "",
           upiId: data.upiId || "",
+          vehicleCategory: data.vehicleCategory || "Passenger", // ✅ Fallback default matching
         });
       } catch (err) {
         console.error(err);
@@ -98,7 +101,8 @@ export default function DriverProfile() {
     const fd = new FormData();
     fd.append("image", imageFile);
 
-    const res = await fetch("http://localhost:5000/api/drivers/upload", {
+    // 🔴 FIXED: Converted hardcoded localhost to relative api endpoint
+    const res = await fetch("/drivers/upload", {
       method: "POST",
       body: fd,
     });
@@ -124,7 +128,8 @@ export default function DriverProfile() {
       const imageUrl = await uploadImage();
 
       // 2) update profile
-      const res = await fetch(`http://localhost:5000/api/drivers/${driverId}`, {
+      // 🔴 FIXED: Converted hardcoded localhost to relative api endpoint
+      const res = await fetch(`/drivers/${driverId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, imageUrl }),
@@ -236,6 +241,20 @@ export default function DriverProfile() {
               />
             </div>
 
+            {/* ✅ CONNECTED DRIVER DROPDOWN BOX INTERFACE LINK */}
+            <div>
+              <label className="text-xs font-black text-black">Vehicle Category *</label>
+              <select
+                name="vehicleCategory"
+                value={formData.vehicleCategory}
+                onChange={handleChange}
+                className="mt-1 w-full rounded-2xl border-2 border-black bg-white px-4 py-3 font-bold text-black outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="Passenger">Passenger Service (🚕)</option>
+                <option value="Goods Carrier">Goods Carrier (📦)</option>
+              </select>
+            </div>
+
             <div>
               <label className="text-xs font-black text-black">Email</label>
               <input
@@ -246,7 +265,7 @@ export default function DriverProfile() {
               />
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <label className="text-xs font-black text-black">UPI ID</label>
               <input
                 name="upiId"

@@ -1,18 +1,17 @@
-const BASE_URL = "http://localhost:5000/api/admin";
+import axios from "axios";
 
+// 🔴 FIXED: Removed hardcoded localhost. Axios will now automatically prepend your Choreo cloud URL!
 export const getPendingDrivers = async () => {
-  const res = await fetch(`${BASE_URL}/drivers/pending`);
-  return res.json();
+  const res = await axios.get("/admin/drivers/pending");
+  return res.data;
 };
 
 export const approveDriver = async (id) => {
-  return fetch(`${BASE_URL}/drivers/approve/${id}`, {
-    method: "PUT",
-  });
+  const res = await axios.put(`/admin/drivers/approve/${id}`);
+  return res.data;
 };
 
 export const rejectDriver = async (id) => {
-  return fetch(`${BASE_URL}/drivers/reject/${id}`, {
-    method: "PUT",
-  });
+  const res = await axios.put(`/admin/drivers/reject/${id}`);
+  return res.data;
 };
